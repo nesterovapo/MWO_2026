@@ -37,3 +37,34 @@ flowchart TD
     style I fill:#f1f8e9
 ```
 
+### WYBÓR JĘZYKA
+
+```mermaid
+flowchart TD
+    Start([Użytkownik uruchamia biletomat]) --> A[Rozpoczęcie interakcji]
+    A --> B[Wyświetlenie opcji języka]
+    B --> C[Wybór języka]
+    C --> D[Dostosowanie interfejsu]
+    D --> End([Kontynuacja z wybranym językiem])
+    
+    %% Include relations - Domyślny język
+    A --> E[Domyślny język]
+    E --> B
+    
+    %% Include relations - Anulowanie transakcji (dostępne w dowolnym momencie)
+    A --> F[Anulowanie transakcji]
+    B --> F
+    C --> F
+    D --> F
+    F --> End
+    
+    %% Extend relations - Lista popularnych języków
+    B --> G[Lista popularnych języków]
+    G -.->|opcjonalnie| C
+    
+    style Start fill:#e1f5fe
+    style End fill:#f3e5f5
+    style E fill:#fff3e0
+    style F fill:#ffebee
+    style G fill:#f1f8e9
+```
