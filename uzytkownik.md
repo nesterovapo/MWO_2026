@@ -1,3 +1,4 @@
+
 # Aktor: Użytkownik
 
 ## DIAGRAMY PRZYPADKÓW UŻYCIA
@@ -67,4 +68,31 @@ flowchart TD
     style E fill:#fff3e0
     style F fill:#ffebee
     style G fill:#f1f8e9
+```
+
+## DIAGRAMY SEKWENCJI
+
+### SZYBKI WYBÓR RODZAJU BILETU
+```mermaid
+sequenceDiagram
+    participant U as Uzytkownik
+    participant S as System_Biletomat
+
+    U->>S: Rozpoczecie interakcji
+    S-->>U: Wyswietlenie ekranu startowego
+
+    U->>S: Wybor kategorii biletu
+    S-->>U: Wyswietlenie listy biletow
+
+    U->>S: Wybor konkretnego biletu
+    S-->>U: Wyswietlenie podsumowania
+
+    U->>S: Potwierdzenie wyboru
+    S-->>U: Rozpoczecie realizacji transakcji
+
+    alt Anulowanie transakcji
+        U->>S: Anuluj proces
+        S-->>U: Zakonczenie interakcji
+    end
+
 ```
