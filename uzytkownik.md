@@ -94,7 +94,7 @@ sequenceDiagram
         U->>S: Anuluj proces
         S-->>U: Zakonczenie interakcji
     end
-
+```
 
 ### DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA "WYBÓR JĘZYKA"
 
