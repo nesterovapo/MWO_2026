@@ -69,7 +69,7 @@ sequenceDiagram
 
     B-->>U: Wyswietlenie kategorii biletow i szczegolow
     B-->>U: Oczekiwanie na wybor uzytkownika
-
+```
 ### DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA "OBSŁUGA WYBORU JĘZYKA"
 
 **AKTOR:** BILETOMAT  
