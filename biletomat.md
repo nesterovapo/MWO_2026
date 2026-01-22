@@ -55,8 +55,20 @@ flowchart TD
     style F fill:#ffebee
 ```
 
-
 ## DIAGRAMY SEKWENCJI
+### SZYBKI WYBÓR RODZAJU BILETU 
+```mermaid
+sequenceDiagram
+    participant B as Biletomat
+    participant SC as System_centralny
+    participant U as Uzytkownik
+
+    B->>B: Uruchomienie ekranu powitalnego
+    B->>SC: Pobranie listy dostepnych biletow
+    SC-->>B: Lista biletow i kategorii
+
+    B-->>U: Wyswietlenie kategorii biletow i szczegolow
+    B-->>U: Oczekiwanie na wybor uzytkownika
 
 ### DIAGRAM SEKWENCJI DLA PRZYPADKU UŻYCIA "OBSŁUGA WYBORU JĘZYKA"
 
