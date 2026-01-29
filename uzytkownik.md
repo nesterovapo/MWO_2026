@@ -165,3 +165,93 @@ sequenceDiagram
         end
     end
 ```
+
+### DIAGRAMY KLAS
+Na podstawie diagramu sekwencji dla przypadku użycia "Wybór języka" zidentyfikowano następujące klasy odpowiedzialne za realizację funkcjonalności:
+
+### ZIDENTYFIKOWANE KLASY:
+
+- **UZYTKOWNIK** - reprezentuje osobę korzystającą z biletomatu i jej preferencje językowe
+- **INTERFEJSBILETOMATU** - obsługuje wyświetlanie ekranu powitalnego i opcji językowych
+- **SYSTEMJEKOWY** - zarządza dostępnymi językami i ich konfiguracjami
+- **BAZAJEZYKOW** - przechowuje wszystkie dane językowe i statystyki popularności
+- **KONTROLERANULOWANIA** - obsługuje proces anulowania transakcji
+- **KONFIGURACYJEKOWA** - zawiera ustawienia i tłumaczenia dla konkretnego języka
+
+```mermaid
+classDiagram
+    class Uzytkownik {
+        -String id
+        -String preferencjeJezykowe
+        -Boolean czyAutentykowany
+        -List~String~ historiaWyborow
+        +void uruchomBiletomat()
+        +String wybierzJezyk(List~String~ dostepneJezyki)
+        +void wybierzAnuluj()
+        +void zapiszuPreferencje(String jezyk)
+        +Boolean potwierdzWybor(String jezyk)
+    }
+    
+    class InterfejsBiletomatu {
+        -String stanInterfejsu
+        -String aktualnyJezyk
+        -List~String~ wyswietlaneJezyki
+        -Boolean czyEkranPowitalny
+        +void wyswietlEkranPowitalny()
+        +void wyswietlOpcjeJezykowe(List~String~ jezyki)
+        +void wyswietlKomunikat(String komunikat)
+        +void dostosowujInterfejs(String jezyk)
+        +void resetDoGlownego()
+        +void obslugaNulowania()
+    }
+    
+    class SystemJezykowy {
+        -String domyslnyJezyk
+        -Map~String, KonfiguracjaJezykowa~ dostepneJezyki
+        -List~String~ popularneJezyki
+        +List~String~ pobierzEkranPowitalny()
+        +Boolean weryfikujDostepnosc(String jezyk)
+        +void ustawDomyslnyJezyk(String jezyk)
+        +KonfiguracjaJezykowa pobierzKonfiguracje(String jezyk)
+        +List~String~ pobierzPopularneJezyki()
+    }
+    
+    class BazaJezykow {
+        -Map~String, KonfiguracjaJezykowa~ konfiguracjeJezykowe
+        -Map~String, Integer~ statystykiPopularnosci
+        -List~String~ wspieraneJezyki
+        +KonfiguracjaJezykowa pobierzDaneJezykowe(String jezyk)
+        +Boolean sprawdzDostepnosc(String jezyk)
+        +List~String~ pobierzWszystkieJezyki()
+        +List~String~ pobierzPopularne(Int limit)
+        +void aktualizujStatystyki(String jezyk)
+    }
+    
+    class KontrolerAnulowania {
+        -Boolean czyAktywny
+        -String stanProcesu
+        -List~String~ dozwoloneAkcje
+        +void przetworzZadanieAnulowania()
+        +void potwierdzAnulowanie()
+        +void resetInterfejsu()
+        +Boolean sprawdzStanProcesu()
+        +void wyswietlKomunikatAnulowania()
+    }
+    
+    class KonfiguracjaJezykowa {
+        -String kodJezyka
+        -String nazwaJezyka
+        -Map~String, String~ tlumaczenia
+        -Boolean czyDostepny
+        +String pobierzTlumaczenie(String klucz)
+        +Boolean czyKompletna()
+        +void ustawDostepnosc(Boolean status)
+    }
+
+    Uzytkownik --> InterfejsBiletomatu : współdziała
+    InterfejsBiletomatu --> SystemJezykowy : zarządza językami
+    SystemJezykowy --> BazaJezykow : pobiera dane językowe
+    BazaJezykow *-- KonfiguracjaJezykowa : zawiera
+    InterfejsBiletomatu --> KontrolerAnulowania : obsługuje anulowanie
+    Uzytkownik ..> KontrolerAnulowania : może aktywować
+```
