@@ -165,3 +165,63 @@ sequenceDiagram
         end
     end
 ```
+
+```mermaid
+classDiagram
+    class Uzytkownik {
+        -DateTime czasRozpoczecia
+        -String wybranyJezyk
+        +rozpocznijInterakcje() void
+        +wybierzKategorie(KategoriaBiletu kategoria) void
+        +wybierzBilet(Bilet bilet) void
+        +potwierdzWybor() void
+        +anulujTransakcje() void
+    }
+
+    class SystemBiletomat {
+        -id id
+        -boolean czyAktywny
+        +wyswietlEkranStartowy() void
+        +wyswietlListeBiletow(KategoriaBiletu kategoria) void
+        +wyswietlPodsumowanie(Bilet bilet) void
+        +rozpocznijRealizacjeTransakcji() void
+        +zakonczInterakcje() void
+    }
+
+    class Bilet {
+        -String idBiletu
+        -String nazwa
+        -double cena
+        -String opis
+        -KategoriaBiletu kategoria
+        +getCena() double
+        +getNazwa() String
+        +getKategoria() KategoriaBiletu
+    }
+
+
+    class Transakcja {
+        -String idTransakcji
+        -Bilet wybranyBilet
+        -Uzytkownik uzytkownik
+        -DateTime czasTransakcji
+        -StatusTransakcji status
+        +potwierdzTransakcje() boolean
+        +anulujTransakcje() void
+        +getStatus() StatusTransakcji
+    }
+
+
+
+    Uzytkownik "1" --> "1" SystemBiletomat : korzysta z
+
+    Uzytkownik "1" --> "0..1" Bilet : wybiera
+    Uzytkownik "1" --> "0..1" Transakcja : inicjuje
+    
+    SystemBiletomat "1" --> "0..*" Bilet : prezentuje
+    SystemBiletomat "1" --> "0..1" Transakcja : realizuje
+    
+    
+    Transakcja "1" --> "1" Bilet : dotyczy
+```
+
