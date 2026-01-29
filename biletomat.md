@@ -56,7 +56,7 @@ flowchart TD
 ```
 
 ## DIAGRAMY SEKWENCJI
-### SZYBKI WYBÓR RODZAJU BILETU 
+### WYŚWIETLENIE DOSTĘPNYCH BILETÓW
 ```mermaid
 sequenceDiagram
     participant B as Biletomat
@@ -194,4 +194,62 @@ classDiagram
     BazaKonfiguracji *-- KonfiguracjaJezykowa : zawiera
     SystemJezykowy --> KontrolerCzasu : monitoruje aktywność
     InterfejsBiletomatu --> KontrolerCzasu : powiadamia o działaniach
+```
+```mermaid
+classDiagram
+    class Biletomat {
+        -String idBiletomatu
+        -String lokalizacja
+        -StanBiletomatu stan
+        -EkranPowitalny ekranPowitalny
+        +uruchomEkranPowitalny() void
+        +oczekujNaWyborUzytkownika() void
+        +rejestujWybor(Bilet bilet) void
+        +pobierzListeBiletow() List~Bilet~
+    }
+
+    class EkranPowitalny {
+        -String jezykInterfejsu
+        -List~KategoriaBiletu~ kategorieWidoczne
+        +wyswietlKategorie(List~KategoriaBiletu~ kategorie) void
+        +wyswietlSzczegoly(Bilet bilet) void
+        +odswiezEkran() void
+    }
+
+
+    class Bilet {
+        -String idBiletu
+        -String nazwa
+        -double cena
+        -String opis
+        -TypBiletu typ
+        -KategoriaBiletu kategoria
+        -boolean czyDostepny
+        +getCena() double
+        +getNazwa() String
+        +getOpis() String
+        +sprawdzDostepnosc() boolean
+    }
+
+
+
+    class ListaBiletow {
+        -List~Bilet~ bilety
+        -DateTime dataAktualizacji
+        +dodajBilet(Bilet bilet) void
+        +usunBilet(String idBiletu) void
+        +filtrujPoKategorii(KategoriaBiletu kategoria) List~Bilet~
+        +pobierzWszystkie() List~Bilet~
+    }
+
+    Biletomat "1" --> "1" EkranPowitalny : wyświetla
+    Biletomat "1" --> "1" ListaBiletow : zarządza
+
+    
+    ListaBiletow "1" o-- "0..*" Bilet : zawiera
+    
+    
+    EkranPowitalny "1" --> "0..*" Bilet : prezentuje
+    
+    
 ```
