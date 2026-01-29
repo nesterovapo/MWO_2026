@@ -116,3 +116,82 @@ sequenceDiagram
         Note over IB: Powrót do języka domyślnego
     end
 ```
+
+### DIAGRAMY KLAS
+
+#### ANALIZA PRZYPADKU UŻYCIA I DIAGRAMU SEKWENCJI - OBSŁUGA WYBORU JĘZYKA
+
+Na podstawie diagramu sekwencji dla przypadku użycia "Obsługa wyboru języka" zidentyfikowano następujące klasy odpowiedzialne za realizację funkcjonalności:
+
+## OPIS KLAS
+
+### ZIDENTYFIKOWANE KLASY:
+
+- **INTERFEJSBILETOMATU** - odpowiada za wyświetlanie opcji językowych i interakcję z użytkownikiem
+- **SYSTEMJEKOWY** - zarządza zmianami języka i monitoruje aktywność użytkownika  
+- **BAZAKONFIGURACJI** - przechowuje dane językowe i konfiguracje
+- **KONFIGURACYJEKOWA** - reprezentuje ustawienia pojedynczego języka
+- **KONTROLERCZASU** - monitoruje timeout i powrót do języka domyślnego
+
+```mermaid
+classDiagram
+    class InterfejsBiletomatu {
+        -String aktualnyJezyk
+        -List~String~ dostepneJezyki  
+        -Boolean czyAktywny
+        -Int timeoutCzas
+        +void wyswietlOpcjeJezykowe()
+        +void rejestrujWyborJezyka(String jezyk)
+        +void dostosowujInterfejs(String jezyk)
+        +void wyswietlKomunikat(String komunikat)
+        +void resetDoDomsylnego()
+    }
+    
+    class SystemJezykowy {
+        -String domyslnyJezyk
+        -Map~String, KonfiguracjaJezykowa~ konfiguracjeJezykowe
+        -Long ostatniaAktywnosc
+        +void zadanieZmianyJezyka(String jezyk)
+        +KonfiguracjaJezykowa pobierzKonfiguracje(String jezyk)
+        +void ustawDomyslnyJezyk(String jezyk)
+        +void ladujZasobyJezykowe(String jezyk)
+        +Boolean wykryjBrakAktywnosci()
+        +void monitorujAktywnosc()
+    }
+    
+    class BazaKonfiguracji {
+        -Map~String, KonfiguracjaJezykowa~ daneJezykowe
+        -Map~String, Integer~ statystykiUzycia
+        +KonfiguracjaJezykowa pobierzDaneJezykowe(String jezyk)
+        +void zapiszKonfiguracje(String jezyk, KonfiguracjaJezykowa konfiguracja)
+        +Boolean sprawdzDostepnosc(String jezyk)
+        +List~String~ pobierzWszystkieJezyki()
+    }
+    
+    class KonfiguracjaJezykowa {
+        -String kodJezyka
+        -String nazwaJezyka
+        -Map~String, String~ tlumaczenia
+        -String formatDaty
+        -String formatLiczb
+        +String pobierzTlumaczenie(String klucz)
+        +void ustawFormat(String typ, String format)
+        +Boolean czyKompletna()
+    }
+    
+    class KontrolerCzasu {
+        -Long czasStartu
+        -Int limitTimeout
+        -Boolean czyAktywny
+        +void rozpocznijLiczenie()
+        +Boolean sprawdzTimeout()
+        +void resetujLicznik()
+        +void zatrzymajLiczenie()
+    }
+
+    InterfejsBiletomatu --> SystemJezykowy : zarządza językami
+    SystemJezykowy --> BazaKonfiguracji : pobiera dane językowe
+    BazaKonfiguracji *-- KonfiguracjaJezykowa : zawiera
+    SystemJezykowy --> KontrolerCzasu : monitoruje aktywność
+    InterfejsBiletomatu --> KontrolerCzasu : powiadamia o działaniach
+```
